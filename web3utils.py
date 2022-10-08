@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 import os
 import json
 
+from utils import *
+
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -25,8 +27,7 @@ def build_create_community_tx(name):
         'gas': 1000000,
         'gasPrice': w3.toWei('50', 'gwei'),
     })
-    print(tx)
-    return tx
+    return format_call_data(tx)
 
 def build_join_community_tx():
     w3 = get_web3()
@@ -37,8 +38,7 @@ def build_join_community_tx():
         'gas': 1000000,
         'gasPrice': w3.toWei('50', 'gwei'),
     })
-    print (tx)
-    return tx
+    return format_call_data(tx)
 
 def build_deposit_tx(amount):
     w3 = get_web3()    
@@ -49,8 +49,7 @@ def build_deposit_tx(amount):
         'gas': 1000000,
         'gasPrice': w3.toWei('50', 'gwei'),
     })
-    print (tx)
-    return tx
+    return format_call_data(tx)
 
 def build_withdraw_tx(amount):
     w3 = get_web3()
@@ -61,8 +60,7 @@ def build_withdraw_tx(amount):
         'gas': 1000000,
         'gasPrice': w3.toWei('50', 'gwei'),
     })
-    print (tx)
-    return tx
+    return format_call_data(tx)
 
 def get_erc_20_contract():
     with open('./abi/erc20.json') as f:
@@ -116,25 +114,13 @@ def get_community_name():
 
 def get_community_token_address():
     community_contract = get_community_contract()
-    erc20_address = community_contract.functions.community_token().call()
+    erc20_address = community_contract.functions.communityToken().call()
     return erc20_address
 
-def setup_new_community():
-    set_community_address()
-    set_community_token_address()
-
-def set_community_token_address():
-    global ERC20Address
-    ERC20Address = get_community_token_address()
-
-def set_community_address():
-    global CommunityAddress
-    CommunityAddress = get_newest_community_address()
-
-# def get_community_members():
-#     community_contract = get_community_contract()
-#     members = community_contract.functions.getMembers().call()
-#     return members
+def get_community_sbt_address():
+    community_contract = get_community_contract()
+    sbt_address = community_contract.functions.soulboundToken().call()
+    return sbt_address
 
 def getUsdcBalance(address):
     """Get the USDC balance of an address"""
@@ -155,9 +141,12 @@ def test_connection():
     else:
         print("Not connected to Ethereum")
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
     # print(get_balance("0xD93Bcd514471730a7B5C3052dA61e8EE4D7415B0"))
     # build_create_community_tx("test")
     # build_join_community_tx()
     # build_deposit_tx(0.1)
     # get_communities()
+    print(build_create_community_tx("test"))
+    print(build_join_community_tx())
+    print(build_deposit_tx(0.1))

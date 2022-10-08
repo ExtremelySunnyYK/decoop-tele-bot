@@ -2,7 +2,9 @@ import logging
 import os
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 from dotenv import load_dotenv
+
 from web3utils import *
+
 
 load_dotenv("keys.env")
 token = str(os.getenv("TELEGRAM_BOT"))
@@ -19,24 +21,36 @@ community_name = 'Satoshi' #  Placeholder name for the Community fund
 
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
+
+def link(update, context):
+    """Link your ethereum address to your telegram account."""
+    update.message.reply_text('Link!')
+    update.message.reply_text("<a href='https://www.google.com/'>Google</a>", parse_mode=ParseMode.HTML)
+
 def start(update, context):
-    """Send a message when the command /start is issued."""
+    """Start the bot."""
+    update.message.reply_text('GM! Welcome to the community fund bot.')
+    update.message.reply_text('Please create your community fund using the command /create_fund <name of fund>')
+
+def create_fund(update, context):
+    """Setup the community fund when the command /create_fund is issued."""
     try:
         community_name = update.message.text.split(' ')[1]
         update.message.reply_text('GM! New community fund created: ' + community_name)
         txn = build_create_community_tx(community_name)
-        logger.info("Community fund created: %s", txn)
-        update.message.reply_text('Transaction details: ' + txn)
+        update.message.reply_text('Create Fund Call Data: ' + txn)
     except:
         logger.warning('Update "%s" caused error "%s"', update, context.error)
         update.message.reply_text('Please provide a community name.')
-        update.message.reply_text('Example: /start Satoshi')
+        update.message.reply_text('Example: /create_fund Satoshi')
 
 
 def help(update, context):
     """Send all commands when the command /help is issued."""
-    update.message.reply_text('''
-    /start <community name> - Start the bot
+    update.message.reply_text(
+    '''
+    /start - Start the bot
+    /create_fund <community name> - Start the bot
     /register <address> - Register your ethereum address
     /lend <amount> - Lend money to the community fund
     /borrow <amount> - Borrow money from the community fund
@@ -141,6 +155,8 @@ def main():
 
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("link", link))
+    dp.add_handler(CommandHandler("create_fund", create_fund))
     dp.add_handler(CommandHandler("register", register))
 
     dp.add_handler(CommandHandler("lend", lend))
