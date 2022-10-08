@@ -31,23 +31,24 @@ def link(update, context):
 
 def start(update, context):
     """Start the bot."""
-    update.message.reply_text('GM! Welcome to the community fund bot.')
-    bot.send_message('Step 1: Create your community fund using the command /create_fund <name of fund>', update.effective_message.chat_id)
-    bot.send_message('Step 2: Register users ethereum address using the command /register', update.effective_message.chat_id)
-    bot.send_message('Step 3: Lend money to the community fund using the command /lend <amount>', update.effective_message.chat_id)
-    bot.send_message('Step 4: Borrow money from the community fund using the command /borrow <amount>', update.effective_message.chat_id)
-    bot.send_message('Step 5: Repay money to the community fund using the command /repay <amount>', update.effective_message.chat_id)
-    bot.send_message('Step 6: Withdraw money from the community fund using the command /withdraw <amount>', update.effective_message.chat_id)
-    # bot.send_message('Step 7: Check your balance using the command /balance', update.effective_message.chat_id)
+    chat_id = update.effective_message.chat_id
+    bot.send_message(chat_id,'Welcome to the Community Fund Bot Decoop!')
+    bot.send_message(chat_id,'Step 1: Create your community fund using the command /create_fund <name of fund>')
+    bot.send_message(chat_id, 'Step 2: Register users ethereum address using the command /register')
+    bot.send_message(chat_id,'Step 3: Lend money to the community fund using the command /lend <amount>')
+    bot.send_message(chat_id,'Step 4: Borrow money from the community fund using the command /borrow <amount>')
+    bot.send_message(chat_id,'Step 5: Repay money to the community fund using the command /repay <amount>')
+    bot.send_message(chat_id,'Step 6: Withdraw money from the community fund using the command /withdraw <amount>')
+    bot.send_message('Step 7: Check your balance using the command /balance <address>', update.effective_message.chat_id)
    
 
 def create_fund(update, context):
     """Setup the community fund when the command /create_fund is issued."""
     try:
         community_name = update.message.text.split(' ')[1]
-        update.message.reply_text('GM! New community fund created: ' + community_name)
+        bot.send_message(update.message.chat_id, 'GM! Creating new community fund: ' + community_name)
         txn = build_create_community_tx(community_name)
-        bot.send_message(f"<a href={txn}>Create Fund Call Data </a>" , update.effective_message.chat_id)
+        bot.send_message(update.message.chat_id,f"<a href={txn}>Create Fund Call Data </a>")
     except:
         logger.warning('Update "%s" caused error "%s"', update, context.error)
         update.message.reply_text('Please provide a community name.')
@@ -65,7 +66,8 @@ def help(update, context):
     /borrow <amount> - Borrow money from the community fund
     /repay <amount> - Repay money to the community fund
     /withdraw <amount> - Withdraw money from the community fund
-    /balance - Check your balance
+    /balance <address> - Check your balance
+    /get_users - Get all users
     /help - Show all commands
     ''')
 
@@ -86,9 +88,9 @@ def register(update, context):
         update.message.reply_text('You are already registered!')
         return
 
-    update.message.reply_text('Registering new user into community fund.')
+    bot.send_message(update.message.chat_id,'Registering new user into community fund.')
     txn = build_join_community_tx()
-    bot.send_message(f"<a href={txn}>Register Call Data </a>" , update.effective_message.chat_id)
+    bot.send_message(update.message.chat_id,f"<a href={txn}>Register Call Data </a>", parse_mode=ParseMode.HTML)
 
     # Generate Qr code
     img = generate_qr_code(txn)
@@ -109,12 +111,11 @@ def lend(update, context):
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
         txn = build_deposit_tx(amount)
-        bot.send_message(f"<a href={txn}>Lend {amount} </a>" , update.effective_message.chat_id)
+        bot.send_message(update.message.chat_id, f"<a href={txn}>Lend {amount} </a>", parse_mode=ParseMode.HTML)
         
     except:
-        update.message.reply_text('Please provide a valid amount.')
-        update.message.reply_text('Example: /lend 100')
-
+        bot.send_message(update.message.chat_id, 'Please provide an amount.')
+        bot.send_message(update.message.chat_id, 'Example: /lend 1000')
     
 
 def borrow(update, context):
@@ -124,23 +125,46 @@ def borrow(update, context):
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
         txn = build_withdraw_tx(amount)
-        bot.send_message(f"<a href={txn}>Borrow {amount} </a>" , update.effective_message.chat_id)
+        bot.send_message(update.message.chat_id, f"<a href={txn}>Borrow {amount} </a>", parse_mode=ParseMode.HTML)
     except:
-        update.message.reply_text('Please provide a valid amount.')
-        update.message.reply_text('Example: /borrow 100')
+        bot.send_message(update.message.chat_id, 'Please provide a valid amount.')
+        bot.send_message(update.message.chat_id, 'Example: /borrow 100')
 
 def repay(update, context):
     """Repay money to the community fund."""
-    update.message.reply_text('Repay!')
+    bot.send_message(update.message.chat_id, 'Repay!')
     try:
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
         txn = build_deposit_tx(amount)
-        bot.send_message(f"<a href={txn}>Repay {amount} </a>" , update.effective_message.chat_id)
+        bot.send_message(update.message.chat_id,f"<a href={txn}>Repay {amount} </a>", parse_mode=ParseMode.HTML)
     except:
-        update.message.reply_text('Please provide a valid amount.')
-        update.message.reply_text('Example: /repay 100')
+        bot.send_message(update.message.chat_id,'Please provide a valid amount.', )
+        bot.send_message(update.message.chat_id, 'Example: /repay 100')
 
+def withdraw(update, context):
+    """Withdraw money from the community fund."""
+    bot.send_message(update.message.chat_id, 'Withdraw!')
+    try:
+        # get user's input and save it to a variable
+        amount = update.message.text.split(' ')[1]
+        txn = build_withdraw_tx(amount)
+        bot.send_message(update.message.chat_id,f"<a href={txn}>Withdraw {amount} </a>", parse_mode=ParseMode.HTML)
+    except:
+        bot.send_message(update.message.chat_id,'Please provide a valid amount.')
+        bot.send_message(update.message.chat_id, 'Example: /withdraw 100')
+
+def balance(update, context):
+    """Check your balance."""
+    bot.send_message(update.message.chat_id, 'Balance!')
+    try:
+        # get user's input and save it to a variable
+        address = update.message.text.split(' ')[1]
+        balance = get_balance(address)
+        bot.send_message(update.message.chat_id, f"Your balance is {balance} ")
+    except:
+        bot.send_message(update.message.chat_id,'Please provide a valid address.')
+        bot.send_message(update.message.chat_id, 'Example: /balance 0x1234567890')
 
 def main():
     """Start the bot."""
@@ -161,6 +185,9 @@ def main():
     dp.add_handler(CommandHandler("lend", lend))
     dp.add_handler(CommandHandler("borrow", borrow))
     dp.add_handler(CommandHandler("repay", repay))
+    dp.add_handler(CommandHandler("withdraw", withdraw))
+    dp.add_handler(CommandHandler("balance", balance))
+
     dp.add_handler(CommandHandler("get_users", get_users))
 
     dp.add_handler(CommandHandler("help", help))
