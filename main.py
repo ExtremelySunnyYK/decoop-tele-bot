@@ -92,7 +92,7 @@ def register(update, context):
 
     bot.send_message(update.message.chat_id,'Registering new user into community fund.')
     mobile_link,desktop_link = build_join_community_tx()
-    bot.send_message(update.message.chat_id,f"Register URL :")
+    bot.send_message(update.message.chat_id,f"Register URL:")
     bot.send_message(update.message.chat_id,f"Mobile Link: {mobile_link}")
     bot.send_message(update.message.chat_id,f"Desktop Link: {desktop_link}")
 
