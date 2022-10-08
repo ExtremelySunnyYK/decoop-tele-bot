@@ -39,13 +39,20 @@ def build_join_community_tx():
         'gas': 1000000,
         'gasPrice': w3.toWei('50', 'gwei'),
     })
+    print(tx)
     return format_call_data(tx)
 
 def build_deposit_tx(amount):
     w3 = get_web3()    
     # build a transaction that sends erc20 from the user's account to the community fund
     erc20_contract = get_erc_20_contract()
-    tx = erc20_contract.functions.transfer(CommunityAddress, amount).buildTransaction({
+    # convert address to checksum address
+    address = w3.toChecksumAddress(get_newest_community_address())
+
+    # convert amount to wei
+    amount = w3.toWei(amount, 'ether')
+
+    tx = erc20_contract.functions.transfer(address, amount).buildTransaction({
         'chainId': 5,
         'gas': 1000000,
         'gasPrice': w3.toWei('50', 'gwei'),
@@ -55,6 +62,10 @@ def build_deposit_tx(amount):
 def build_withdraw_tx(amount):
     w3 = get_web3()
     community_contract = get_community_contract()
+
+    # convert amount to wei
+    amount = w3.toWei(amount, 'ether')
+    
     # Build the transaction
     tx = community_contract.functions.withdraw(amount).buildTransaction({
         'chainId': 5,
@@ -150,5 +161,6 @@ if __name__ == "__main__":
     # get_communities()
     # print(build_create_community_tx("test"))
     # print(build_join_community_tx())
-    # print(build_deposit_tx(0.1))
-    generate_qr_code(build_join_community_tx())
+    # print(build_deposit_tx(0.11))
+    print(build_withdraw_tx(0.1))
+    # generate_qr_code(build_join_community_tx())

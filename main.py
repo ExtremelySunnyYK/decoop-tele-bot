@@ -112,6 +112,7 @@ def lend(update, context):
     try: 
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
+        logger.info(amount)
         txn = build_deposit_tx(amount)
         # bot.send_message(update.message.chat_id, f"<a href={txn}>Lend {amount} </a>", parse_mode=ParseMode.HTML)
         bot.send_message(update.message.chat_id, f"Lend {amount} :")
