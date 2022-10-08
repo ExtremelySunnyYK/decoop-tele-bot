@@ -15,12 +15,10 @@ def credit_score(address, contract_pool):
     df['Withdraw'] = (df['from'] == contract_pool) & (df['to'] == address)
     
     deposited_amount = 0 
+    withdrawn_amount = 0 
     for i in range(len(df)): 
         if df.loc[i, 'Deposit'] == True: 
             deposited_amount += df.loc[i, 'value']
-
-    withdrawn_amount = 0 
-    for i in range(len(df)): 
         if df.loc[i, 'Withdraw'] == True: 
             withdrawn_amount += df.loc[i, 'value']
 
