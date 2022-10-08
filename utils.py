@@ -1,5 +1,5 @@
-local_host = "http://localhost:3000/call"
-remote = "https://crypto-2022-hackathon.vercel.app/call"
+# local_host = "http://localhost:3000/call"
+local_host = "https://crypto-2022-hackathon.vercel.app/call"
 import json
 import qrcode
 
