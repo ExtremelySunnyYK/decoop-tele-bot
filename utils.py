@@ -15,19 +15,14 @@ def format_call_data(txn):
 def generate_qr_code(url):
     """Generate a QR code from the url."""
     print("Generating QR code")
-    try:
-      qr = qrcode.QRCode(
-          version=1,
-          error_correction=qrcode.constants.ERROR_CORRECT_L,
-          box_size=10,
-          border=4,
-      )
-      qr.add_data(url)
-      qr.make(fit=True)
-      img = qr.make_image(fill_color="black", back_color="white")
-      # return img
-      # save image to file
-      img.save("qr.png")
-      return "qr.png"
-    except:
-      return "Error: Invalid URL."
+    img = qrcode.make(url)
+    # return img
+    # save image to file
+    img.save("./qr.png")
+    return "./qr.png"
+    
+
+if __name__ == '__main__':
+    # print("Testing utils.py")
+    # print(format_call_data({"to": "0x123", "data": "0x456"}))
+    print(generate_qr_code("https://google.com"))

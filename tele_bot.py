@@ -12,10 +12,11 @@ import yfinance as yf
 load_dotenv("keys.env")
 token = str(os.getenv("TELEGRAM_BOT"))
 chatid = int(os.getenv("CHAT_ID"))
+bot = Bot(token=token)
 
 def scanner():
     try:
-        bot = Bot(token=token)
+        # bot = Bot(token=token)
         bot.sendMessage(
             text="🎁 ",
             timeout=200, disable_web_page_preview=True,

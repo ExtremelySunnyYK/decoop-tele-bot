@@ -2,7 +2,7 @@ import logging
 import os
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 from dotenv import load_dotenv
-
+from tele_bot import bot
 from web3utils import *
 from utils import generate_qr_code
 
@@ -85,10 +85,10 @@ def register(update, context):
 
     # Generate Qr code
     img = generate_qr_code(txn)
+    f = open('qr.png', 'rb')
 
     # send image to user
-    update.message.reply_photo(img)
-
+    bot.sendPhoto(photo=f, chat_id=update.message.chat_id)
    
 
 def get_users(update,context):
