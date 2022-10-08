@@ -48,7 +48,7 @@ def create_fund(update, context):
         community_name = update.message.text.split(' ')[1]
         bot.send_message(update.message.chat_id, 'GM! Creating new community fund: ' + community_name)
         txn = build_create_community_tx(community_name)
-        bot.send_message(update.message.chat_id,f"<a href={txn}>Create Fund Call Data </a>")
+        bot.send_message(update.message.chat_id,f"<a href={txn}>Create Fund Call Data </a>", parse_mode=ParseMode.HTML)
     except:
         logger.warning('Update "%s" caused error "%s"', update, context.error)
         update.message.reply_text('Please provide a community name.')
@@ -90,7 +90,9 @@ def register(update, context):
 
     bot.send_message(update.message.chat_id,'Registering new user into community fund.')
     txn = build_join_community_tx()
-    bot.send_message(update.message.chat_id,f"<a href={txn}>Register Call Data </a>", parse_mode=ParseMode.HTML)
+    # bot.send_message(update.message.chat_id,f"<a href={txn}>Register Call Data </a>", parse_mode=ParseMode.HTML)
+    bot.send_message(update.message.chat_id,f"Register Call Data :")
+    bot.send_message(update.message.chat_id,f"{txn}")
 
     # Generate Qr code
     img = generate_qr_code(txn)
@@ -111,7 +113,9 @@ def lend(update, context):
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
         txn = build_deposit_tx(amount)
-        bot.send_message(update.message.chat_id, f"<a href={txn}>Lend {amount} </a>", parse_mode=ParseMode.HTML)
+        # bot.send_message(update.message.chat_id, f"<a href={txn}>Lend {amount} </a>", parse_mode=ParseMode.HTML)
+        bot.send_message(update.message.chat_id, f"Lend {amount} :")
+        bot.send_message(update.message.chat_id, f"{txn}")
         
     except:
         bot.send_message(update.message.chat_id, 'Please provide an amount.')
@@ -125,7 +129,10 @@ def borrow(update, context):
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
         txn = build_withdraw_tx(amount)
-        bot.send_message(update.message.chat_id, f"<a href={txn}>Borrow {amount} </a>", parse_mode=ParseMode.HTML)
+        # bot.send_message(update.message.chat_id, f"<a href={txn}>Borrow {amount} </a>", parse_mode=ParseMode.HTML)
+        bot.send_message(update.message.chat_id, f"Borrow {amount} :")
+        bot.send_message(update.message.chat_id, f"{txn}")
+
     except:
         bot.send_message(update.message.chat_id, 'Please provide a valid amount.')
         bot.send_message(update.message.chat_id, 'Example: /borrow 100')
@@ -137,7 +144,10 @@ def repay(update, context):
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
         txn = build_deposit_tx(amount)
-        bot.send_message(update.message.chat_id,f"<a href={txn}>Repay {amount} </a>", parse_mode=ParseMode.HTML)
+        # bot.send_message(update.message.chat_id,f"<a href={txn}>Repay {amount} </a>", parse_mode=ParseMode.HTML)
+        bot.send_message(update.message.chat_id,f"Repay {amount} :")
+        bot.send_message(update.message.chat_id,f"{txn}")
+
     except:
         bot.send_message(update.message.chat_id,'Please provide a valid amount.', )
         bot.send_message(update.message.chat_id, 'Example: /repay 100')
@@ -149,7 +159,9 @@ def withdraw(update, context):
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
         txn = build_withdraw_tx(amount)
-        bot.send_message(update.message.chat_id,f"<a href={txn}>Withdraw {amount} </a>", parse_mode=ParseMode.HTML)
+        # bot.send_message(update.message.chat_id,f"<a href={txn}>Withdraw {amount} </a>", parse_mode=ParseMode.HTML)
+        bot.send_message(update.message.chat_id,f"Withdraw {amount} :")
+        bot.send_message(update.message.chat_id,f"{txn}")
     except:
         bot.send_message(update.message.chat_id,'Please provide a valid amount.')
         bot.send_message(update.message.chat_id, 'Example: /withdraw 100')
