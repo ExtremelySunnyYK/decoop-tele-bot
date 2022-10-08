@@ -15,13 +15,14 @@ token = str(os.getenv("RPC_KEY"))
 
 CommunityAddress = "0x6DCFC2BD7Ee97386d080209549eBE61D98d3fD6A"
 FactoryAddress = "0xC8Ee6F2d24A9D6718F2068D5Ee7a99880284495f"
+ERC20Address = "0xAAc502bcf03D977D7Ca21ee4C28D8981Ec9E3d71"
 
 def build_create_community_tx(name):
     w3 = get_web3()
     factory_contract = get_factory_contract()
     # Build the transaction
-    tx = factory_contract.functions.createCommunity(name).buildTransaction({
-        'chainId': 4,
+    tx = factory_contract.functions.create(name).buildTransaction({
+        'chainId': 5,
         'gas': 1000000,
         'gasPrice': w3.toWei('50', 'gwei'),
     })
@@ -33,29 +34,32 @@ def build_join_community_tx():
     community_contract = get_community_contract()
     # Build the transaction
     tx = community_contract.functions.joinCommunity().buildTransaction({
-        'chainId': 1,
+        'chainId': 5,
         'gas': 1000000,
         'gasPrice': w3.toWei('50', 'gwei'),
     })
+    print (tx)
     return tx
 
 def build_deposit_tx(amount):
     w3 = get_web3()    
-    # build a transaction that sends from the user's account to the community fund
-    # Get the nonce
-    nonce = w3.eth.getTransactionCount(w3.eth.accounts[0])
-    # Build the transaction
-    tx = w3.eth.sendTransaction({
-        'to': CommunityAddress,
-        'value': w3.toWei(amount, 'ether'),
-        'chainId': 1,
+    # build a transaction that sends erc20 from the user's account to the community fund
+    erc20_contract = get_erc_20_contract()
+    tx = erc20_contract.functions.transfer(CommunityAddress, amount).buildTransaction({
+        'chainId': 5,
         'gas': 1000000,
         'gasPrice': w3.toWei('50', 'gwei'),
-        'nonce': nonce,
     })
+    print (tx)
     return tx
 
-
+def get_erc_20_contract():
+    with open('./abi/erc20.json') as f:
+        erc20_abi = json.load(f)
+    
+    w3 = get_web3()
+    erc20_contract = w3.eth.contract(address=ERC20Address, abi=erc20_abi)
+    return erc20_contract
 
 def get_web3():
     # Create a Web3 object
@@ -107,5 +111,7 @@ def test_connection():
         print("Not connected to Ethereum")
 
 if __name__ == "__main__":
-    print(get_balance("0xD93Bcd514471730a7B5C3052dA61e8EE4D7415B0"))
-    build_create_community_tx("test")
+    # print(get_balance("0xD93Bcd514471730a7B5C3052dA61e8EE4D7415B0"))
+    # build_create_community_tx("test")
+    # build_join_community_tx()
+    build_deposit_tx(0.1)
