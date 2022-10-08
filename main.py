@@ -1,8 +1,8 @@
 import logging
 import os
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 from dotenv import load_dotenv
-
+from web3utils import *
 
 load_dotenv("keys.env")
 token = str(os.getenv("TELEGRAM_BOT"))
@@ -24,8 +24,13 @@ def start(update, context):
     try:
         community_name = update.message.text.split(' ')[1]
         update.message.reply_text('GM! New community fund created: ' + community_name)
+        txn = build_create_community_tx(community_name)
+        logger.info("Community fund created: %s", txn)
+        # update.message.reply_text('Transaction details: ' + txn)
     except:
-        update.message.reply_text('GM! Welcome to the community fund.')
+        logger.warning('Update "%s" caused error "%s"', update, context.error)
+        update.message.reply_text('Please provide a community name.')
+        update.message.reply_text('Example: /start Satoshi')
 
 
 def help(update, context):
@@ -74,7 +79,7 @@ def register(update, context):
         update.message.reply_text('Registered new user: ' + user_id + ' with address: ' + address)
 
         # Mint a SBT for the user
-        
+
     except:
         update.message.reply_text('Please provide a valid ethereum address.')
         update.message.reply_text('Example: /register 0x1234567890abcdef1234567890abcdef12345678')
@@ -86,6 +91,8 @@ def get_users(update,context):
 def lend(update, context):
     """Provide money for the community fund."""
     update.message.reply_text('Lend!')
+
+    
 
 def borrow(update, context):
     """Borrow money from the community fund."""

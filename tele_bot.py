@@ -17,9 +17,10 @@ def scanner():
     try:
         bot = Bot(token=token)
         bot.sendMessage(
-                        text="🎁 ",
-                        timeout=200, disable_web_page_preview=True,
-                        parse_mode=ParseMode.HTML)
+            text="🎁 ",
+            timeout=200, disable_web_page_preview=True,
+            parse_mode=ParseMode.HTML
+            )
 
     except Exception as e:
         print(e)

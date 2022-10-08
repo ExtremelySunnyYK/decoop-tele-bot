@@ -1,9 +1,60 @@
+import logging
 from web3 import Web3
 from dotenv import load_dotenv
 import os
+import json
+
+# Enable logging
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 load_dotenv("keys.env")
 token = str(os.getenv("RPC_KEY"))
+
+CommunityAddress = "0x6DCFC2BD7Ee97386d080209549eBE61D98d3fD6A"
+FactoryAddress = "0xC8Ee6F2d24A9D6718F2068D5Ee7a99880284495f"
+
+def build_create_community_tx(name):
+    w3 = get_web3()
+    factory_contract = get_factory_contract()
+    # Build the transaction
+    tx = factory_contract.functions.createCommunity(name).buildTransaction({
+        'chainId': 4,
+        'gas': 1000000,
+        'gasPrice': w3.toWei('50', 'gwei'),
+    })
+    print(tx)
+    return tx
+
+def build_join_community_tx():
+    w3 = get_web3()
+    community_contract = get_community_contract()
+    # Build the transaction
+    tx = community_contract.functions.joinCommunity().buildTransaction({
+        'chainId': 1,
+        'gas': 1000000,
+        'gasPrice': w3.toWei('50', 'gwei'),
+    })
+    return tx
+
+def build_deposit_tx(amount):
+    w3 = get_web3()    
+    # build a transaction that sends from the user's account to the community fund
+    # Get the nonce
+    nonce = w3.eth.getTransactionCount(w3.eth.accounts[0])
+    # Build the transaction
+    tx = w3.eth.sendTransaction({
+        'to': CommunityAddress,
+        'value': w3.toWei(amount, 'ether'),
+        'chainId': 1,
+        'gas': 1000000,
+        'gasPrice': w3.toWei('50', 'gwei'),
+        'nonce': nonce,
+    })
+    return tx
+
 
 
 def get_web3():
@@ -19,6 +70,22 @@ def get_balance(address):
     # convert balance to ether
     ether = w3.fromWei(balance, 'ether')
     return str(ether) + "eth"
+
+def get_community_contract():
+    with open('./abi/community.json') as f:
+        community_abi = json.load(f)
+    
+    w3 = get_web3()
+    community_contract = w3.eth.contract(address=CommunityAddress, abi=community_abi)
+    return community_contract
+
+def get_factory_contract():
+    with open('./abi/factory.json') as f:
+        factory_abi = json.load(f)
+    
+    w3 = get_web3()
+    factory_contract = w3.eth.contract(address=FactoryAddress, abi=factory_abi)
+    return factory_contract
 
 def getUsdcBalance(address):
     """Get the USDC balance of an address"""
@@ -41,3 +108,4 @@ def test_connection():
 
 if __name__ == "__main__":
     print(get_balance("0xD93Bcd514471730a7B5C3052dA61e8EE4D7415B0"))
+    build_create_community_tx("test")
