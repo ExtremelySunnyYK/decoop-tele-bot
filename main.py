@@ -26,7 +26,7 @@ def start(update, context):
         update.message.reply_text('GM! New community fund created: ' + community_name)
         txn = build_create_community_tx(community_name)
         logger.info("Community fund created: %s", txn)
-        # update.message.reply_text('Transaction details: ' + txn)
+        update.message.reply_text('Transaction details: ' + txn)
     except:
         logger.warning('Update "%s" caused error "%s"', update, context.error)
         update.message.reply_text('Please provide a community name.')
@@ -38,10 +38,10 @@ def help(update, context):
     update.message.reply_text('''
     /start <community name> - Start the bot
     /register <address> - Register your ethereum address
-    /lend - Lend money to the community fund
-    /borrow - Borrow money from the community fund
-    /repay - Repay money to the community fund
-    /withdraw - Withdraw money from the community fund
+    /lend <amount> - Lend money to the community fund
+    /borrow <amount> - Borrow money from the community fund
+    /repay <amount> - Repay money to the community fund
+    /withdraw <amount> - Withdraw money from the community fund
     /balance - Check your balance
     /help - Show all commands
     ''')
@@ -79,6 +79,8 @@ def register(update, context):
         update.message.reply_text('Registered new user: ' + user_id + ' with address: ' + address)
 
         # Mint a SBT for the user
+        txn = build_join_community_tx(address)
+        logger.info("Call Data for minting SBT: %s", txn)
 
     except:
         update.message.reply_text('Please provide a valid ethereum address.')
@@ -91,16 +93,40 @@ def get_users(update,context):
 def lend(update, context):
     """Provide money for the community fund."""
     update.message.reply_text('Lend!')
+    try: 
+        # get user's input and save it to a variable
+        amount = update.message.text.split(' ')[1]
+        build_deposit_tx(amount)
+        update.message.reply_text('Lent ' + amount + ' to the community fund.')
+    except:
+        update.message.reply_text('Please provide a valid amount.')
+        update.message.reply_text('Example: /lend 100')
 
     
 
 def borrow(update, context):
     """Borrow money from the community fund."""
     update.message.reply_text('Borrow!')
+    try:
+        # get user's input and save it to a variable
+        amount = update.message.text.split(' ')[1]
+        build_withdraw_tx(amount)
+        update.message.reply_text('Borrowed ' + amount + ' from the community fund.')
+    except:
+        update.message.reply_text('Please provide a valid amount.')
+        update.message.reply_text('Example: /borrow 100')
 
 def repay(update, context):
     """Repay money to the community fund."""
     update.message.reply_text('Repay!')
+    try:
+        # get user's input and save it to a variable
+        amount = update.message.text.split(' ')[1]
+        build_deposit_tx(amount)
+        update.message.reply_text('Repaid ' + amount + ' to the community fund.')
+    except:
+        update.message.reply_text('Please provide a valid amount.')
+        update.message.reply_text('Example: /repay 100')
 
 
 def main():

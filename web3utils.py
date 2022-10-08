@@ -13,9 +13,8 @@ logger = logging.getLogger(__name__)
 load_dotenv("keys.env")
 token = str(os.getenv("RPC_KEY"))
 
-CommunityAddress = "0x6DCFC2BD7Ee97386d080209549eBE61D98d3fD6A"
-FactoryAddress = "0xC8Ee6F2d24A9D6718F2068D5Ee7a99880284495f"
-ERC20Address = "0xAAc502bcf03D977D7Ca21ee4C28D8981Ec9E3d71"
+FactoryAddress = "0xcf6e8963778931bfA9f5A1012654e0941F80CE6f"
+
 
 def build_create_community_tx(name):
     w3 = get_web3()
@@ -53,12 +52,24 @@ def build_deposit_tx(amount):
     print (tx)
     return tx
 
+def build_withdraw_tx(amount):
+    w3 = get_web3()
+    community_contract = get_community_contract()
+    # Build the transaction
+    tx = community_contract.functions.withdraw(amount).buildTransaction({
+        'chainId': 5,
+        'gas': 1000000,
+        'gasPrice': w3.toWei('50', 'gwei'),
+    })
+    print (tx)
+    return tx
+
 def get_erc_20_contract():
     with open('./abi/erc20.json') as f:
         erc20_abi = json.load(f)
     
     w3 = get_web3()
-    erc20_contract = w3.eth.contract(address=ERC20Address, abi=erc20_abi)
+    erc20_contract = w3.eth.contract(address=get_community_token_address(), abi=erc20_abi)
     return erc20_contract
 
 def get_web3():
@@ -80,7 +91,7 @@ def get_community_contract():
         community_abi = json.load(f)
     
     w3 = get_web3()
-    community_contract = w3.eth.contract(address=CommunityAddress, abi=community_abi)
+    community_contract = w3.eth.contract(address=get_newest_community_address(), abi=community_abi)
     return community_contract
 
 def get_factory_contract():
@@ -90,6 +101,40 @@ def get_factory_contract():
     w3 = get_web3()
     factory_contract = w3.eth.contract(address=FactoryAddress, abi=factory_abi)
     return factory_contract
+
+def get_newest_community_address():
+    factory_contract = get_factory_contract()
+    index = factory_contract.functions.lastIndex().call() - 1
+    communities = factory_contract.functions.communities(index).call()
+    print(communities)
+    return communities
+
+def get_community_name():
+    community_contract = get_community_contract()
+    name = community_contract.functions.name().call()
+    return name
+
+def get_community_token_address():
+    community_contract = get_community_contract()
+    erc20_address = community_contract.functions.community_token().call()
+    return erc20_address
+
+def setup_new_community():
+    set_community_address()
+    set_community_token_address()
+
+def set_community_token_address():
+    global ERC20Address
+    ERC20Address = get_community_token_address()
+
+def set_community_address():
+    global CommunityAddress
+    CommunityAddress = get_newest_community_address()
+
+# def get_community_members():
+#     community_contract = get_community_contract()
+#     members = community_contract.functions.getMembers().call()
+#     return members
 
 def getUsdcBalance(address):
     """Get the USDC balance of an address"""
@@ -110,8 +155,9 @@ def test_connection():
     else:
         print("Not connected to Ethereum")
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # print(get_balance("0xD93Bcd514471730a7B5C3052dA61e8EE4D7415B0"))
     # build_create_community_tx("test")
     # build_join_community_tx()
-    build_deposit_tx(0.1)
+    # build_deposit_tx(0.1)
+    # get_communities()
