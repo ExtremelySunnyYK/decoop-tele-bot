@@ -4,6 +4,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Conve
 from dotenv import load_dotenv
 
 from web3utils import *
+from utils import generate_qr_code
 
 
 load_dotenv("keys.env")
@@ -25,7 +26,8 @@ community_name = 'Satoshi' #  Placeholder name for the Community fund
 def link(update, context):
     """Link your ethereum address to your telegram account."""
     update.message.reply_text('Link!')
-    update.message.reply_text("<a href='https://www.google.com/'>Google</a>", parse_mode=ParseMode.HTML)
+    update.message.reply_text("<a href='https://www.google.com/'>Google</a>")
+    update.message.reply_text("<a href='tg://user?id=123456789'>Link</a>")
 
 def start(update, context):
     """Start the bot."""
@@ -92,9 +94,16 @@ def register(update, context):
         # send back the user's input
         update.message.reply_text('Registered new user: ' + user_id + ' with address: ' + address)
 
-        # Mint a SBT for the user
         txn = build_join_community_tx(address)
         logger.info("Call Data for minting SBT: %s", txn)
+
+        # Generate Qr code
+        img = generate_qr_code(txn)
+
+        # send image to user
+        update.message.reply_photo(img)
+
+
 
     except:
         update.message.reply_text('Please provide a valid ethereum address.')
