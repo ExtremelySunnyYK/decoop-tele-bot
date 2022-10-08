@@ -1,15 +1,12 @@
 import os
 import time
-import requests
-import pandas as pd
 import datetime as DT
 from telegram import Bot
 from telegram import ParseMode
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-import yfinance as yf
 
-# load_dotenv("keys.env")
+load_dotenv("keys.env")
 token = str(os.getenv("TELEGRAM_BOT"))
 chatid = int(os.getenv("CHAT_ID"))
 bot = Bot(token=token)

@@ -12,7 +12,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-# load_dotenv("keys.env")
+load_dotenv("keys.env")
 token = str(os.getenv("RPC_KEY"))
 
 FactoryAddress = "0xcf6e8963778931bfA9f5A1012654e0941F80CE6f"

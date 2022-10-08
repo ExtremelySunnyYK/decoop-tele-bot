@@ -8,7 +8,7 @@ from utils import generate_qr_code
 from telegram import ParseMode
 
 
-# load_dotenv("keys.env")
+load_dotenv("keys.env")
 token = str(os.getenv("TELEGRAM_BOT"))
 
 # Enable logging
