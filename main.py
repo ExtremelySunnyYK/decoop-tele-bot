@@ -92,13 +92,12 @@ def register(update, context):
 
     bot.send_message(update.message.chat_id,'Registering new user into community fund.')
     mobile_link,desktop_link = build_join_community_tx()
-    # bot.send_message(update.message.chat_id,f"<a href={txn}>Register Call Data </a>", parse_mode=ParseMode.HTML)
     bot.send_message(update.message.chat_id,f"Register URL :")
     bot.send_message(update.message.chat_id,f"Mobile Link: {mobile_link}")
     bot.send_message(update.message.chat_id,f"Desktop Link: {desktop_link}")
 
     # Generate Qr code
-    img = generate_qr_code(txn)
+    img = generate_qr_code(mobile_link)
     f = open('qr.png', 'rb')
 
     # send image to user
