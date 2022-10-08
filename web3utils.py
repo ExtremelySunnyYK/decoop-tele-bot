@@ -32,6 +32,7 @@ def build_create_community_tx(name):
 def build_join_community_tx():
     w3 = get_web3()
     community_contract = get_community_contract()
+
     # Build the transaction
     tx = community_contract.functions.joinCommunity().buildTransaction({
         'chainId': 5,

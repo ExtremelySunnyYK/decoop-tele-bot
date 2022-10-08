@@ -53,7 +53,7 @@ def help(update, context):
     '''
     /start - Start the bot
     /create_fund <community name> - Start the bot
-    /register <address> - Register your ethereum address
+    /register - Register your ethereum address
     /lend <amount> - Lend money to the community fund
     /borrow <amount> - Borrow money from the community fund
     /repay <amount> - Repay money to the community fund
@@ -80,34 +80,16 @@ def register(update, context):
         return
 
     update.message.reply_text('Registering new user into community fund.')
+    txn = build_join_community_tx()
+    update.message.reply_text('Join Community Call Data: ' + txn)
 
-    try:
-        # get user's input and save it to a variable
-        address = update.message.text.split(' ')[1]
+    # Generate Qr code
+    img = generate_qr_code(txn)
 
-        # get user telegram id
-        user_id = update.message.from_user.first_name
+    # send image to user
+    update.message.reply_photo(img)
 
-        # store ethereum address and telegram id in a dictionary
-        users[user_id] = address
-
-        # send back the user's input
-        update.message.reply_text('Registered new user: ' + user_id + ' with address: ' + address)
-
-        txn = build_join_community_tx(address)
-        logger.info("Call Data for minting SBT: %s", txn)
-
-        # Generate Qr code
-        img = generate_qr_code(txn)
-
-        # send image to user
-        update.message.reply_photo(img)
-
-
-
-    except:
-        update.message.reply_text('Please provide a valid ethereum address.')
-        update.message.reply_text('Example: /register 0x1234567890abcdef1234567890abcdef12345678')
+   
 
 def get_users(update,context):
     update.message.reply_text(users)

@@ -25,6 +25,9 @@ def generate_qr_code(url):
       qr.add_data(url)
       qr.make(fit=True)
       img = qr.make_image(fill_color="black", back_color="white")
-      return img
+      # return img
+      # save image to file
+      img.save("qr.png")
+      return "qr.png"
     except:
       return "Error: Invalid URL."
