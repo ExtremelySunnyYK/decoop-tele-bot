@@ -47,8 +47,10 @@ def create_fund(update, context):
     try:
         community_name = update.message.text.split(' ')[1]
         bot.send_message(update.message.chat_id, 'GM! Creating new community fund: ' + community_name)
-        txn = build_create_community_tx(community_name)
-        bot.send_message(update.message.chat_id,f"<a href={txn}>Create Fund Call Data </a>", parse_mode=ParseMode.HTML)
+        mobile_link,desktop_link = build_create_community_tx(community_name)
+        bot.send_message(update.message.chat_id, f"Create Community URL :")
+        bot.send_message(update.message.chat_id, f"Mobile Link: {mobile_link}")
+        bot.send_message(update.message.chat_id, f"Desktop Link: {desktop_link}")
     except:
         logger.warning('Update "%s" caused error "%s"', update, context.error)
         update.message.reply_text('Please provide a community name.')
@@ -89,10 +91,11 @@ def register(update, context):
         return
 
     bot.send_message(update.message.chat_id,'Registering new user into community fund.')
-    txn = build_join_community_tx()
+    mobile_link,desktop_link = build_join_community_tx()
     # bot.send_message(update.message.chat_id,f"<a href={txn}>Register Call Data </a>", parse_mode=ParseMode.HTML)
-    bot.send_message(update.message.chat_id,f"Register Call Data :")
-    bot.send_message(update.message.chat_id,f"{txn}")
+    bot.send_message(update.message.chat_id,f"Register URL :")
+    bot.send_message(update.message.chat_id,f"Mobile Link: {mobile_link}")
+    bot.send_message(update.message.chat_id,f"Desktop Link: {desktop_link}")
 
     # Generate Qr code
     img = generate_qr_code(txn)
@@ -113,10 +116,12 @@ def lend(update, context):
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
         logger.info(amount)
-        txn = build_deposit_tx(amount)
+        mobile_link,desktop_link = build_deposit_tx(amount)
         # bot.send_message(update.message.chat_id, f"<a href={txn}>Lend {amount} </a>", parse_mode=ParseMode.HTML)
-        bot.send_message(update.message.chat_id, f"Lend {amount} :")
-        bot.send_message(update.message.chat_id, f"{txn}")
+        bot.send_message(update.message.chat_id, f"Lend {amount} URL:")
+        bot.send_message(update.message.chat_id, f"Mobile Link: {mobile_link}")
+        bot.send_message(update.message.chat_id, f"Desktop Link: {desktop_link}")
+
         
     except:
         bot.send_message(update.message.chat_id, 'Please provide an amount.')
@@ -129,10 +134,11 @@ def borrow(update, context):
     try:
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
-        txn = build_withdraw_tx(amount)
+        mobile_link,desktop_link = build_withdraw_tx(amount)
         # bot.send_message(update.message.chat_id, f"<a href={txn}>Borrow {amount} </a>", parse_mode=ParseMode.HTML)
-        bot.send_message(update.message.chat_id, f"Borrow {amount} :")
-        bot.send_message(update.message.chat_id, f"{txn}")
+        bot.send_message(update.message.chat_id, f"Borrow {amount} URL:")
+        bot.send_message(update.message.chat_id, f"Mobile Link: {mobile_link}")
+        bot.send_message(update.message.chat_id, f"Desktop Link: {desktop_link}")
 
     except:
         bot.send_message(update.message.chat_id, 'Please provide a valid amount.')
@@ -144,10 +150,11 @@ def repay(update, context):
     try:
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
-        txn = build_deposit_tx(amount)
+        mobile_link,desktop_link = build_deposit_tx(amount)
         # bot.send_message(update.message.chat_id,f"<a href={txn}>Repay {amount} </a>", parse_mode=ParseMode.HTML)
-        bot.send_message(update.message.chat_id,f"Repay {amount} :")
-        bot.send_message(update.message.chat_id,f"{txn}")
+        bot.send_message(update.message.chat_id,f"Repay {amount} URL:")
+        bot.send_message(update.message.chat_id,f"Mobile Link: {mobile_link}")
+        bot.send_message(update.message.chat_id,f"Desktop Link: {desktop_link}")
 
     except:
         bot.send_message(update.message.chat_id,'Please provide a valid amount.', )
@@ -159,10 +166,12 @@ def withdraw(update, context):
     try:
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
-        txn = build_withdraw_tx(amount)
+        mobile_link,desktop_link = build_withdraw_tx(amount)
         # bot.send_message(update.message.chat_id,f"<a href={txn}>Withdraw {amount} </a>", parse_mode=ParseMode.HTML)
-        bot.send_message(update.message.chat_id,f"Withdraw {amount} :")
-        bot.send_message(update.message.chat_id,f"{txn}")
+        bot.send_message(update.message.chat_id,f"Withdraw {amount} URL:")
+        bot.send_message(update.message.chat_id,f"Mobile Link: {mobile_link}")
+        bot.send_message(update.message.chat_id,f"Desktop Link: {desktop_link}")
+
     except:
         bot.send_message(update.message.chat_id,'Please provide a valid amount.')
         bot.send_message(update.message.chat_id, 'Example: /withdraw 100')

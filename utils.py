@@ -1,5 +1,6 @@
 # local_host = "http://localhost:3000/call"
-local_host = "https://metamask.app.link/dapp/crypto-2022-hackathon.vercel.app/call"
+mobile = "https://metamask.app.link/dapp/crypto-2022-hackathon.vercel.app/call"
+desktop = "https://crypto-2022-hackathon.vercel.app/call"
 import json
 import qrcode
 
@@ -9,7 +10,9 @@ def format_call_data(txn):
     try:
       to_address = txn['to']
       call_data = txn['data']
-      return local_host + "?to=" + to_address + "&calldata=" + call_data
+      mobile_link = mobile + "?to=" + to_address + "&calldata=" + call_data
+      desktop_link = desktop + "?to=" + to_address + "&calldata=" + call_data
+      return mobile_link, desktop_link
     except:
       return "Error: Invalid transaction."
 
