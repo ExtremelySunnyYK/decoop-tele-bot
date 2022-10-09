@@ -52,7 +52,8 @@ def create_fund(update, context):
         bot.send_message(update.message.chat_id, f"Create Community URL :")
         bot.send_message(update.message.chat_id, f"Mobile Link: {mobile_link}")
         bot.send_message(update.message.chat_id, f"Desktop Link: {desktop_link}")
-    except:
+    
+    except KeyError:
         logger.warning('Update "%s" caused error "%s"', update, context.error)
         update.message.reply_text('Please provide a community name.')
         update.message.reply_text('Example: /create_fund Satoshi')
@@ -124,7 +125,7 @@ def lend(update, context):
         bot.send_message(update.message.chat_id, f"Desktop Link: {desktop_link}")
 
         
-    except:
+    except KeyError:
         bot.send_message(update.message.chat_id, 'Please provide an amount.')
         bot.send_message(update.message.chat_id, 'Example: /lend 1000')
     
@@ -141,7 +142,7 @@ def borrow(update, context):
         bot.send_message(update.message.chat_id, f"Mobile Link: {mobile_link}")
         bot.send_message(update.message.chat_id, f"Desktop Link: {desktop_link}")
 
-    except:
+    except KeyError:
         bot.send_message(update.message.chat_id, 'Please provide a valid amount.')
         bot.send_message(update.message.chat_id, 'Example: /borrow 100')
 
@@ -157,7 +158,7 @@ def repay(update, context):
         bot.send_message(update.message.chat_id,f"Mobile Link: {mobile_link}")
         bot.send_message(update.message.chat_id,f"Desktop Link: {desktop_link}")
 
-    except:
+    except KeyError:
         bot.send_message(update.message.chat_id,'Please provide a valid amount.', )
         bot.send_message(update.message.chat_id, 'Example: /repay 100')
 
@@ -173,7 +174,7 @@ def withdraw(update, context):
         bot.send_message(update.message.chat_id,f"Mobile Link: {mobile_link}")
         bot.send_message(update.message.chat_id,f"Desktop Link: {desktop_link}")
 
-    except:
+    except KeyError:
         bot.send_message(update.message.chat_id,'Please provide a valid amount.')
         bot.send_message(update.message.chat_id, 'Example: /withdraw 100')
 
@@ -185,7 +186,7 @@ def balance(update, context):
         address = update.message.text.split(' ')[1]
         balance = get_balance(address)
         bot.send_message(update.message.chat_id, f"Your balance is {balance} ")
-    except:
+    except KeyError:
         bot.send_message(update.message.chat_id,'Please provide a valid address.')
         bot.send_message(update.message.chat_id, 'Example: /balance 0x1234567890')
 
@@ -196,7 +197,7 @@ def credit_score(update, context):
         address = update.message.text.split(' ')[1]
         score = get_credit_score(address)
         bot.send_message(update.message.chat_id, f"Your credit score is {score} ")
-    except:
+    except KeyError:
         bot.send_message(update.message.chat_id,'Please provide a valid address.')
         bot.send_message(update.message.chat_id, 'Example: /credit_score 0x1234567890')
 

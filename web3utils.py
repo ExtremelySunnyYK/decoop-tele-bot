@@ -170,4 +170,5 @@ if __name__ == "__main__":
     # print(build_join_community_tx())
     # print(build_deposit_tx(0.11))
     print(build_withdraw_tx(0.1))
+    get_credit_score("0xAD2d2CDE7CA8d116d545099405C1FDFc57B6FD9e")
     # generate_qr_code(build_join_community_tx())

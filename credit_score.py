@@ -5,7 +5,7 @@ import datetime as dt
 
 def credit_score(address, contract_pool):
 
-    link = 'https://api.etherscan.io/api?module=account&action=tokentx&address=' + address + '&startblock=0&endblock=99999999&sort=asc&apikey=DI8JFV4AEBPKDPYTKEK8B5PCQXD2YUN75E'
+    link = 'https://api-goerli.etherscan.io/api?module=account&action=tokentx&address=' + address + '&startblock=0&endblock=99999999&sort=asc&apikey=DI8JFV4AEBPKDPYTKEK8B5PCQXD2YUN75E'
     data = requests.get(link).json()['result']
     df = pd.DataFrame(data)
     df['timeStamp'] = df.timeStamp.apply(lambda x: dt.datetime.utcfromtimestamp(int(x)))
