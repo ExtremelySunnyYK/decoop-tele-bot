@@ -39,7 +39,8 @@ def start(update, context):
     bot.send_message(chat_id,'Step 4: Borrow money from the community fund using the command /borrow <amount>')
     bot.send_message(chat_id,'Step 5: Repay money to the community fund using the command /repay <amount>')
     bot.send_message(chat_id,'Step 6: Withdraw money from the community fund using the command /withdraw <amount>')
-    bot.send_message('Step 7: Check your balance using the command /balance <address>', update.effective_message.chat_id)
+    bot.send_message(chat_id,'Step 7: Check your balance using the command /balance <address>')
+    bot.send_message(chat_id,'Step 8: Check your credit score using the command /credit_score <address>')
    
 
 def create_fund(update, context):
@@ -69,6 +70,7 @@ def help(update, context):
     /repay <amount> - Repay money to the community fund
     /withdraw <amount> - Withdraw money from the community fund
     /balance <address> - Check your balance
+    /credit_score <address> - Check your credit score
     /get_users - Get all users
     /help - Show all commands
     ''')
@@ -221,7 +223,9 @@ def main():
     dp.add_handler(CommandHandler("borrow", borrow))
     dp.add_handler(CommandHandler("repay", repay))
     dp.add_handler(CommandHandler("withdraw", withdraw))
+
     dp.add_handler(CommandHandler("balance", balance))
+    dp.add_handler(CommandHandler("credit_score", credit_score))
 
     dp.add_handler(CommandHandler("get_users", get_users))
 
