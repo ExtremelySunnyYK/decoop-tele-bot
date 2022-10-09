@@ -195,7 +195,7 @@ def balance(update, context):
         bot.send_message(update.message.chat_id, 'Example: /balance 0x1234567890')
 
 def credit_score(update, context):
-    update.message.reply_text(f'Getting Credit Score for {update.message.from_user.id}')
+    update.message.reply_text(f'Getting Credit Score for {update.message.from_user.first_name}')
     try:
         # get user's input and save it to a variable
         address = update.message.text.split(' ')[1]
