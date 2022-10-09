@@ -188,7 +188,7 @@ def balance(update, context):
     try:
         # get user's input and save it to a variable
         address = update.message.text.split(' ')[1]
-        balance = get_balance(address)
+        balance = get_erc20_balance(address)
         bot.send_message(update.message.chat_id, f"Your balance is {balance} ")
     except:
         bot.send_message(update.message.chat_id,'Please provide a valid address.')

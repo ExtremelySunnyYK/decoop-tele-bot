@@ -136,15 +136,12 @@ def get_community_sbt_address():
     sbt_address = community_contract.functions.soulboundToken().call()
     return sbt_address
 
-def getUsdcBalance(address):
+def get_erc20_balance(address):
     """Get the USDC balance of an address"""
     w3 = get_web3()
-    # Get balance
-    balance = w3.eth.getBalance(address)
-    
-    # convert balance to ether
-    ether = w3.fromWei(balance, 'ether')
-    return ether
+    community_token_contract = get_erc_20_contract()
+    balance = community_token_contract.functions.balanceOf(address).call()
+    return w3.fromWei(balance, 'ether')
 
 
 def test_connection():
