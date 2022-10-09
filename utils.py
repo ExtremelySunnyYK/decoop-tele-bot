@@ -1,6 +1,7 @@
 # local_host = "http://localhost:3000/call"
-mobile = "https://metamask.app.link/dapp/crypto-2022-hackathon.vercel.app/call"
-desktop = "https://crypto-2022-hackathon.vercel.app/call"
+base_url = "decoop.vercel.app/api/credit_score"
+mobile = f"https://metamask.app.link/dapp/{base_url}"
+desktop = f"https://{base_url}"
 import json
 import qrcode
 

@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 load_dotenv("keys.env")
 token = str(os.getenv("RPC_KEY"))
 
-FactoryAddress = "0x7F07f06281A94F14672E39BF5513F1c5f65B19D0"
+FactoryAddress = "0xE372F4B9aA4689a244a1066F8296d32108141A69"
 
 
 def build_create_community_tx(name):
