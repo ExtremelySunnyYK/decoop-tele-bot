@@ -146,11 +146,6 @@ def getUsdcBalance(address):
     ether = w3.fromWei(balance, 'ether')
     return ether
 
-def get_credit_score(address):
-    community_address = get_newest_community_address()
-    score = credit_score(address, community_address)
-    return score
-
 
 def test_connection():
     w3 = get_web3()
