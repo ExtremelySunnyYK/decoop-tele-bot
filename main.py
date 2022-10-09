@@ -117,7 +117,7 @@ def get_users(update,context):
 
 def lend(update, context):
     """Provide money for the community fund."""
-    update.message.reply_text('Lend!')
+    update.message.reply_text(f'{update.message.from_user.first_name} is lending money to the community fund.')
     try: 
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
@@ -152,7 +152,7 @@ def borrow(update, context):
 
 def repay(update, context):
     """Repay money to the community fund."""
-    bot.send_message(update.message.chat_id, 'Repay!')
+    bot.send_message(update.message.chat_id, f'{update.message.from_user.first_name} is repaying money to the community fund.')
     try:
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
@@ -168,7 +168,7 @@ def repay(update, context):
 
 def withdraw(update, context):
     """Withdraw money from the community fund."""
-    bot.send_message(update.message.chat_id, 'Withdraw!')
+    bot.send_message(update.message.chat_id, f'{update.message.from_user.first_name} is withdrawing money from the community fund.')
     try:
         # get user's input and save it to a variable
         amount = update.message.text.split(' ')[1]
@@ -184,7 +184,7 @@ def withdraw(update, context):
 
 def balance(update, context):
     """Check your balance."""
-    bot.send_message(update.message.chat_id, 'Balance!')
+    bot.send_message(update.message.chat_id, f'Checking balance for {update.message.from_user.first_name}')
     try:
         # get user's input and save it to a variable
         address = update.message.text.split(' ')[1]
