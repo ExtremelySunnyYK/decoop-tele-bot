@@ -124,7 +124,7 @@ def lend(update, context):
         logger.info(amount)
         mobile_link,desktop_link = build_deposit_tx(amount)
         # bot.send_message(update.message.chat_id, f"<a href={txn}>Lend {amount} </a>", parse_mode=ParseMode.HTML)
-        bot.send_message(update.message.chat_id, f"Lend {amount} URL:")
+        bot.send_message(update.message.chat_id, f"Lend ${amount} URL:")
         bot.send_message(update.message.chat_id, f"Mobile Link: {mobile_link}")
         bot.send_message(update.message.chat_id, f"Desktop Link: {desktop_link}")
 
@@ -142,7 +142,7 @@ def borrow(update, context):
         amount = update.message.text.split(' ')[1]
         mobile_link,desktop_link = build_withdraw_tx(amount)
         # bot.send_message(update.message.chat_id, f"<a href={txn}>Borrow {amount} </a>", parse_mode=ParseMode.HTML)
-        bot.send_message(update.message.chat_id, f"Borrow {amount} URL:")
+        bot.send_message(update.message.chat_id, f"Borrow ${amount} URL:")
         bot.send_message(update.message.chat_id, f"Mobile Link: {mobile_link}")
         bot.send_message(update.message.chat_id, f"Desktop Link: {desktop_link}")
 
@@ -158,7 +158,7 @@ def repay(update, context):
         amount = update.message.text.split(' ')[1]
         mobile_link,desktop_link = build_deposit_tx(amount)
         # bot.send_message(update.message.chat_id,f"<a href={txn}>Repay {amount} </a>", parse_mode=ParseMode.HTML)
-        bot.send_message(update.message.chat_id,f"Repay {amount} URL:")
+        bot.send_message(update.message.chat_id,f"Repay ${amount} URL:")
         bot.send_message(update.message.chat_id,f"Mobile Link: {mobile_link}")
         bot.send_message(update.message.chat_id,f"Desktop Link: {desktop_link}")
 
@@ -174,7 +174,7 @@ def withdraw(update, context):
         amount = update.message.text.split(' ')[1]
         mobile_link,desktop_link = build_withdraw_tx(amount)
         # bot.send_message(update.message.chat_id,f"<a href={txn}>Withdraw {amount} </a>", parse_mode=ParseMode.HTML)
-        bot.send_message(update.message.chat_id,f"Withdraw {amount} URL:")
+        bot.send_message(update.message.chat_id,f"Withdraw ${amount} URL:")
         bot.send_message(update.message.chat_id,f"Mobile Link: {mobile_link}")
         bot.send_message(update.message.chat_id,f"Desktop Link: {desktop_link}")
 
