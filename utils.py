@@ -1,5 +1,5 @@
 # local_host = "http://localhost:3000/call"
-base_url = "decoop.vercel.app/"
+base_url = "decoop.vercel.app/call"
 mobile = f"https://metamask.app.link/dapp/{base_url}"
 desktop = f"https://{base_url}"
 import json
