@@ -4,8 +4,6 @@ from dotenv import load_dotenv
 import os
 import json
 
-from credit_score import credit_score
-
 from utils import *
 
 # Enable logging
