@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 import os
 import json
 
+from credit_score import credit_score
+
 from utils import *
 
 # Enable logging
@@ -143,6 +145,11 @@ def getUsdcBalance(address):
     # convert balance to ether
     ether = w3.fromWei(balance, 'ether')
     return ether
+
+def get_credit_score(address):
+    community_address = get_newest_community_address()
+    score = credit_score(address, community_address)
+    return score
 
 
 def test_connection():

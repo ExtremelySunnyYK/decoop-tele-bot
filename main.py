@@ -187,6 +187,20 @@ def balance(update, context):
         bot.send_message(update.message.chat_id,'Please provide a valid address.')
         bot.send_message(update.message.chat_id, 'Example: /balance 0x1234567890')
 
+def credit_score(update, context):
+    update.message.reply_text(f'Getting Credit Score for {update.message.from_user.id}')
+    try:
+        # get user's input and save it to a variable
+        address = update.message.text.split(' ')[1]
+        score = get_credit_score(address)
+        bot.send_message(update.message.chat_id, f"Your credit score is {score} ")
+    except:
+        bot.send_message(update.message.chat_id,'Please provide a valid address.')
+        bot.send_message(update.message.chat_id, 'Example: /credit_score 0x1234567890')
+
+
+
+
 def main():
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
