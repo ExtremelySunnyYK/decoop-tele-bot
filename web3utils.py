@@ -50,7 +50,8 @@ def build_deposit_tx(amount):
     address = w3.toChecksumAddress(get_newest_community_address())
 
     # convert amount to wei
-    amount = w3.toWei(amount, 'ether')
+    # amount = w3.toWei(amount, 'ether')
+    amount = amount * 10**8
 
     tx = erc20_contract.functions.transfer(address, amount).buildTransaction({
         'chainId': 5,
